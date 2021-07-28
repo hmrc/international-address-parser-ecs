@@ -7,41 +7,42 @@ app = Flask(__name__)
 
 
 @app.route('/')
-def hello_world():
-    return 'Hello World!'
+def ping():
+    return {"ping": "pong"}, 200
 
 
-@app.route('/expand', methods=["POST"])
+@app.route('/normalize', methods=["POST"])
 def expand():
     address = request.get_json()["address"]
     expanded = expand_address(address)
     return {
-        "expanded": expanded
+        "normalized": expanded
     }, 200
 
 
-@app.route('/parse', methods=["POST"])
+@app.route('/categorize', methods=["POST"])
 def parse():
     address = request.get_json()["address"]
     parsed = parse_address(address)
     return {
-        "parsed": parsed
+        "categorized": dict(swap_tuple_elements(e) for e in parsed)
     }, 200
 
-# Requires a document of the following form:
-# {
-#   "address": "..."
-# }
-#
-@app.route('/normalize', methods=["POST"])
+
+@app.route('/normalize-and-categorize', methods=["POST"])
 def normalize():
     address = request.get_json()["address"]
     expanded = expand_address(address)
-    parsed = [parse_address(e) for e in expanded][0]
+    parsed_list = [parse_address(e) for e in expanded]
+    parsed = [dict([swap_tuple_elements(e) for e in l]) for l in parsed_list]
     return {
-        "normalized": dict([[e[1], e[0]] for e in parsed])
+        "categorized-and-normalized": parsed
     }, 200
 
 
+def swap_tuple_elements(t):
+    return [t[1], t[0]]
+
+
 if __name__ == '__main__':
-    app.run
+    app.run()
