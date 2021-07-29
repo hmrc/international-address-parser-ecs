@@ -32,12 +32,12 @@ It wraps the `libpostal` and `pypostal` libraries behind an HTTP server with 3 P
 }
 ```
 
-+ `/categorize-and-normalize` - this endpoint expands and then parses the given address - it is the same as calling `/normalize` and then `/categorize` with the output.
++ `/normalize-and-categorize` - this endpoint expands and then parses the given address - it is the same as calling `/normalize` and then `/categorize` with the output.
     The output will be like
   
 ```json
 {
-  "categorized-and-normalized": [
+  "normalize-and-categorize": [
     {...},
     {...}
   }

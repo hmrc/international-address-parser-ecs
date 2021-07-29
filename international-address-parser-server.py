@@ -12,7 +12,7 @@ def ping():
 
 
 @app.route('/normalize', methods=["POST"])
-def expand():
+def normalize():
     address = request.get_json()["address"]
     expanded = expand_address(address)
     return {
@@ -21,7 +21,7 @@ def expand():
 
 
 @app.route('/categorize', methods=["POST"])
-def parse():
+def categorize():
     address = request.get_json()["address"]
     parsed = parse_address(address)
     return {
@@ -30,13 +30,13 @@ def parse():
 
 
 @app.route('/normalize-and-categorize', methods=["POST"])
-def normalize():
+def normalize_and_categorize():
     address = request.get_json()["address"]
     expanded = expand_address(address)
     parsed_list = [parse_address(e) for e in expanded]
     parsed = [dict([swap_tuple_elements(e) for e in l]) for l in parsed_list]
     return {
-        "categorized-and-normalized": parsed
+        "normalized-and-categorized": parsed
     }, 200
 
 
