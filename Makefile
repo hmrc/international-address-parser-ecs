@@ -1,7 +1,11 @@
 IMAGE_NAME = cip-attval/international-address-parser
 CONTAINER_NAME = international-address-parser
+REPOSITORY_URI := $(shell sh -c "aws ecr describe-repositories --repository-names=$(IMAGE_NAME) --query 'repositories[].repositoryUri' | grep -v '^\]' | grep -v '^\[' | sed -E 's/[ \"]+//g'")
 
 .SILENT:
+
+show-uri:
+	echo $(REPOSITORY_URI)
 
 build:
 	docker build . -t $(IMAGE_NAME)
@@ -30,5 +34,5 @@ test: test-normalize-endpoint test-categorize-endpoint test-normalize-and-catego
 publish:
 	aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin 710491386758.dkr.ecr.eu-west-2.amazonaws.com
 	docker build -t $(IMAGE_NAME) .
-	docker tag $(IMAGE_NAME):latest 710491386758.dkr.ecr.eu-west-2.amazonaws.com/$(IMAGE_NAME):latest
-	docker push 710491386758.dkr.ecr.eu-west-2.amazonaws.com/$(IMAGE_NAME):latest
+	docker tag $(IMAGE_NAME):latest $(REPOSITORY_URI):latest
+	docker push $(REPOSITORY_URI):latest
