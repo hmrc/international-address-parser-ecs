@@ -2,6 +2,8 @@ from postal.expand import expand_address
 from postal.parser import parse_address
 from flask import Flask
 from flask import request
+from waitress import serve
+
 
 app = Flask(__name__)
 
@@ -45,4 +47,5 @@ def swap_tuple_elements(t):
 
 
 if __name__ == '__main__':
-    app.run()
+    # app.run()
+    serve(app, host='0.0.0.0', port=5000)

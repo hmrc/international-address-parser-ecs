@@ -20,11 +20,12 @@ RUN git clone https://github.com/openvenues/libpostal && \
   make install && \
   ldconfig
 
-RUN pip3 install postal flask
+RUN pip3 install postal flask waitress
 
 WORKDIR /work
 COPY international-address-parser-server.py .
 
 EXPOSE 5000
 
-CMD ["flask", "run", "--host=0.0.0.0"]
+#CMD ["flask", "run", "--host=0.0.0.0"]
+CMD ["python3", "international-address-parser-server.py"]
