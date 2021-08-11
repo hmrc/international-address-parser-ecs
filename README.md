@@ -37,10 +37,10 @@ It wraps the `libpostal` and `pypostal` libraries behind an HTTP server with 3 P
   
 ```json
 {
-  "normalize-and-categorize": [
+  "normalized-and-categorized": [
     {...},
     {...}
-  }
+  ]
 }
 ```
 
