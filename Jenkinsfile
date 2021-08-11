@@ -5,14 +5,14 @@ pipeline {
   }
 
   stages {
-    stage('Build artefact') {
+    stage('Build docker image') {
       steps {
         ansiColor('xterm') {
         	sh('make clean build')
         }
       }
     }
-    stage('Upload to s3') {
+    stage('Upload image to ECS') {
       steps {
         ansiColor('xterm') {
             sh('make publish')
